@@ -4,7 +4,9 @@ project(iris LANGUAGES CXX)
 
 add_executable(iris
   src/bounds3.cpp
+  src/bvh.cpp
   src/camera.cpp
+  src/environment.cpp
   src/image.cpp
   src/intersection.cpp
   src/main.cpp
@@ -33,8 +35,8 @@ set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 set(ASSIMP_BUILD_TESTS OFF)
 target_link_libraries(iris assimp)
 
-find_package(glog 0.6.0 REQUIRED)
-target_link_libraries(iris glog::glog)
+find_package(spdlog REQUIRED)
+target_link_libraries(iris spdlog::spdlog)
 
 find_package(OpenEXR REQUIRED)
 target_link_libraries(iris OpenEXR::OpenEXR)

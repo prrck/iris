@@ -1,3 +1,3 @@
 #include "primitive.h"
 
-Renderable::Renderable(Material const* material) : material(material) {}
+Primitive::Primitive(Material const *material) : material(material) {}

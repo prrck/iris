@@ -1,24 +1,31 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <optional>
 #include <vector>
 
+#include "bvh.h"
+#include "intersection.h"
 #include "material.h"
 #include "primitive.h"
+#include "ray.h"
 
 class Scene {
 public:
-    Scene(const std::string& filepath);
-    ~Scene();
+  Scene(const std::string &filepath);
+  ~Scene();
 
-    void add(Renderable* Renderable);
-    const std::vector<Renderable*>& get_primitives() const { return _primitives; }
-    const std::vector<Renderable*>& get_emissives() const { return _emissives; }
+  void add(Primitive *Primitive);
+  void build_bvh();
+  const std::vector<Primitive *> &get_primitives() const { return _primitives; }
+  const std::vector<Primitive *> &get_emissives() const { return _emissives; }
+  std::optional<Intersection> find_closest_inter(Ray &ray) const;
 
 private:
-    Material _default_material;
-    std::vector<Renderable*> _primitives;
-    std::vector<Renderable*> _emissives;
+  Material _default_material;
+  BVH *_bvh = nullptr;
+  std::vector<Primitive *> _primitives;
+  std::vector<Primitive *> _emissives;
 };
 
 #endif // SCENE_H

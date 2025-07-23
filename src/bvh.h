@@ -7,28 +7,30 @@
 #include "primitive.h"
 #include "vec3.h"
 
-// Heavily inspired by
-// https://www.pbr-book.org/3ed-2018/Primitives_and_Intersection_Acceleration/Bounding_Volume_Hierarchies.
+// class BVHNode {
+// public:
+//   BVHNode *child_a = nullptr;
+//   BVHNode *child_b = nullptr;
+//   Bounds3 _bounds;
+//   std::vector<Primitive> _primitives;
+// };
 
-class BVHPrimitiveInfo {
-    BVHPrimitiveInfo(size_t prim_nb, const Bounds3& bounds)
-        : prim_nb(prim_nb)
-        , bounds(bounds)
-        , centroid(bounds.centroid())
-    {
-    }
-
-    size_t prim_nb;
-    Bounds3 bounds;
-    Vec3 centroid;
-};
-
-class BVHAccel {
-    BVHAccel(const std::vector<Renderable*>& prims, int max_prims_by_node);
+class BVH : public Primitive {
+public:
+  BVH(std::vector<Primitive *> &primitives);
+  // BVH(std::vector<Primitive *>::iterator primitives_start,
+  //     std::vector<Primitive *>::iterator primitives_end);
+  ~BVH();
+  std::optional<Intersection> intersect(Ray &ray) const override;
+  float intersect_t(const Ray &ray) const override;
+  // void point_on_surface(Vec3* point, Vec3* normal) const override;
+  Bounds3 bounds() const override;
 
 private:
-    const int _max_prims_by_node;
-    std::vector<Renderable*> _primitives;
+  Bounds3 _bounds;
+  std::vector<Primitive *> _primitives;
+  BVH *_child_a = nullptr;
+  BVH *_child_b = nullptr;
 };
 
 #endif // BVH_H
