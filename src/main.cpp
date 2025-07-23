@@ -1,7 +1,7 @@
-#include <cmath>
 #include <ctime>
 
 #include <iostream>
+#include <numbers>
 #include <optional>
 #include <sstream>
 #include <string>
@@ -42,12 +42,12 @@ Vec3 trace_path(Ray &ray, const Scene &scene, int depth) {
 
   Ray new_ray = generate_secondary_ray(inter);
 
-  constexpr float prob = 1.0f / (2.0f * float(M_PI));
+  constexpr float prob = 1.0f / (2.0f * float(std::numbers::pi));
 
   // Compute the BRDF for this ray (assuming Lambertian reflection)
   // float cos_theta = std::max(new_ray.direction().dot(inter.normal), 0.0);
   // Vec3 BRDF = inter.material->color / float(M_PI);
-  Vec3 BRDF = inter.material->color / (2.0f * float(M_PI));
+  Vec3 BRDF = inter.material->color / (2.0f * float(std::numbers::pi));
 
   // Recursively trace reflected light sources.
   Vec3 incoming = trace_path(new_ray, scene, depth - 1);

@@ -1,6 +1,9 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.23) # most recent version supported by VS 2022
 
 project(iris LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
 
 add_executable(iris
   src/bounds3.cpp
@@ -24,13 +27,11 @@ add_executable(iris
   
 target_include_directories(iris PRIVATE src dependencies)
 
-target_compile_features(iris PUBLIC cxx_std_20)
-set_target_properties(iris PROPERTIES CXX_EXTENSIONS OFF)
-
 add_library(commandLine dependencies/commandLine.cpp)
 target_link_libraries(iris commandLine)
 
 # LINK EXTERNAL LIBRARIES
+find_package(assimp REQUIRED)
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 set(ASSIMP_BUILD_TESTS OFF)
 target_link_libraries(iris assimp)
@@ -41,7 +42,7 @@ target_link_libraries(iris spdlog::spdlog)
 find_package(OpenEXR REQUIRED)
 target_link_libraries(iris OpenEXR::OpenEXR)
 
-find_package(OpenMP)
+find_package(OpenMP REQUIRED)
 target_link_libraries(iris OpenMP::OpenMP_CXX)
 
 # INCLUDE GOOGLE TEST
@@ -53,7 +54,6 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-
 # TESTS
 enable_testing()
 

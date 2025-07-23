@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <sstream> // added for VS 2022
 
 CommandLine::CommandLine(std::string description)
     : mDescription(std::move(description))
